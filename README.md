@@ -1,44 +1,47 @@
-# Spring boot with Kotlin and Docker
+# Spring boot in Kotlin using MySQL and Docker
 
-## OpenJDK
+Энэхүү заавар нь Spring boot framework-г Kotlin хэл дээр ашиглах demo. Мөн хөгжүүлэлтийн орчин бэлтгэх заавар нь Ubuntu дээр байгаа болно.
+
+## OpenJDK суулгах
 ```
 sudo apt update
 sudo apt install openjdk-11-jdk
 ```
 
-check your java version
+Амжилттай суусан бол Java version шалгана уу
 ```
 java -version
 ```
 
-## Gradle
-Please check latest Gradle version on [gradle.org](https://gradle.org/releases/) 
+## Gradle суулгах
+Gradle вэбсайтруу орж хамгийн сүүлийн хувилбарыг шалган VERSION хувьсагчийн утгыг өөрчлөн ашиглаарай.  
+[https://gradle.org/releases/](https://gradle.org/releases/) 
 
 ```
 VERSION=7.5
 wget https://services.gradle.org/distributions/gradle-${VERSION}-bin.zip -P /tmp
 ```
 
-Once the download is completed, unzip the file in the /opt/gradle directory:
+Таталт амжилттай болсон бол */opt/gradle* directory-д zip file-г задлана.
 
 ```
 sudo unzip -d /opt/gradle /tmp/gradle-${VERSION}-bin.zip
 ```
 
-you get an error saying “sudo: unzip: command not found”, install the unzip package with
+Unzip үед алдаа гарсан бол Unzip package суулгаарай.
 
 ```
 sudo apt install unzip
 ```
 
-Setting up the Environment Variables
+Environment Variables зарлах
 
 ```
 export GRADLE_HOME=/opt/gradle/latest
 export PATH=${GRADLE_HOME}/bin:${PATH}
 ```
 
-Verifying the Gradle Installation
+Gradle суулгах явц амжилттай бол version шалгаад үзээрэй
 
 ```
 gradle -v
@@ -46,7 +49,9 @@ gradle -v
 
 ## Docker
 
-First you need docker engine. Documentation on [https://docs.docker.com](https://docs.docker.com/engine/install/ubuntu/)
+Эхлээд танд Docker Engine хэрэг болно. Үндсэн бэвсайтаас заавартай танилцах бол  
+[Docker Engine суулгах заавар](https://docs.docker.com/engine/install/ubuntu/)
+[Docker Desktop суулгах заавар](https://docs.docker.com/desktop/install/ubuntu/)
 
 Update apt package
 ```
@@ -74,11 +79,11 @@ echo \
 
 Install Docker Engine
 ```
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt update -y
+sudo apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
 ```
 
-Receiving a GPG error when running apt-get update. Your default umask may not be set correctly, causing the public key file for the repo to not be detected. Run the following command and then try to update your repo again
+_apt update_ үед алдаа гарч байвал дараах командыг ажлуулан дахин _sudo apt update -y_ хийнэ үү
 ```
 sudo chmod a+r /etc/apt/keyrings/docker.gpg.
 ```
@@ -88,7 +93,7 @@ Install docker and docker compose
 sudo apt install docker
 sudo apt install docker-compose
 ```
-Check that it’s running:
+Docker service ассан эсэхээ шалгаарай
 ```
 sudo systemctl status docker
 ```
@@ -106,4 +111,46 @@ TriggeredBy: ● docker.socket
              └─24321 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
 ```
 
-next up git clone and run app from docker
+## IntelliJ IDEA Community
+Kotlin хэлний албан ёсны үнэгүй IDE суулгаарай
+
+```
+sudo snap install intellij-idea-community --classic
+```
+## Git
+Git суулгах
+```
+sudo apt install git -y
+```
+Repository clone хийх
+```
+git clone git@github.com:turuuboldoo/spring-in-kotlin.git
+```
+
+Git clone хийх үед _ssh_ алдаа гарч байвал _ssh key_ нэмэх шаардлагатай [SSH key үүсгэх](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+
+## Хөгжүүлэлт
+Project хуулсан directory Gradle build хийнэ үү
+
+```
+gradle build
+```
+
+Хэрэв тест файл дээр алдаа гарч байвал дараах байдлаар build хийгээрэй
+
+```
+gradle build -x test
+```
+
+Gradle build амжилттай болсон бол docker орчноос Spring project, MySQL хамт асаая
+
+```
+docker-compose up -d --build
+```
+
+Амжилттай ассан эсэхээ шалгах
+```
+docker-compose ps
+```
+
+Амжилттай ассан бол _http://127.0.0.1:34001/_ URL-аар browser дээр мөн шалгаж болно
