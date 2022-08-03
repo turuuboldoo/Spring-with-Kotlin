@@ -13,7 +13,7 @@ class HelloController {
         return Collections.singletonMap("message", "hey yo")
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/hello-there")
     fun hello() = "Hello! There"
 
 }

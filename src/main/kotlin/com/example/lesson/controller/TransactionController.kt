@@ -1,36 +1,31 @@
 package com.example.lesson.controller
 
 import com.example.lesson.model.Transaction
-import com.example.lesson.service.TransactionService
-import org.springframework.beans.factory.annotation.Autowired
+import com.example.lesson.service.TransactionDAO
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @RestController
-class TransactionController {
+@RequestMapping("/transactions")
+class TransactionController(var transactionDAO: TransactionDAO) {
 
-    @Autowired
-    var transactionService: TransactionService? = null
-
-    @PostMapping("/transactions")
+    @PostMapping
     fun createTransaction(@RequestBody transaction: Transaction): MutableMap<String, String> {
-        println("${transaction.fromAccount} and ${transaction.toSend}")
-
-        transactionService?.saveTransaction(transaction)
+        transactionDAO.saveTransaction(transaction)
 
         return Collections.singletonMap("message", "success")
     }
 
-    @GetMapping("/transactions")
+    @GetMapping
     fun viewAllTransactions(): Iterable<Transaction?>? {
-        return transactionService?.getTransactionHistory()
+        return transactionDAO.getTransactionHistory()
     }
 
-    @GetMapping("/transactions/{id}")
+    @GetMapping("/{id}")
     fun viewTransactionById(@PathVariable("id") id: Long): Transaction? {
-        val transaction = transactionService?.getTransaction(id)
+        val transaction = transactionDAO.getTransaction(id)
 
         if (transaction != null && transaction.isPresent) {
             return transaction.get()
