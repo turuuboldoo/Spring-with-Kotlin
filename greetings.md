@@ -4,3 +4,5 @@
 Хөгжүүлэлтийн орчин хэрхэн бэлдэх заавар [эндээс](https://github.com/turuuboldoo/spring-in-kotlin/blob/main/README.md) уншаарай.
 
 [Эндээс](https://play.kotlinlang.org/byExample/01_introduction/01_Hello%20world) Kotlin хэлий ахнан шатны заавартай танилцаарай.
+
+Мөн update болгон өөр branch дээр орж байх тул branch switch хийн project турших боломжтой шүү.
