@@ -1,10 +1,12 @@
 package com.example.lesson.controller
 
-import com.example.lesson.exception.InvalidTransactionReferenceException
 import com.example.lesson.model.Transaction
 import com.example.lesson.service.TransactionService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
+import java.util.*
 
 @RestController
 class TransactionController {
@@ -12,19 +14,21 @@ class TransactionController {
     @Autowired
     var transactionService: TransactionService? = null
 
-    @PostMapping("/create")
-    fun createTransaction(@RequestBody transaction: Transaction): String {
+    @PostMapping("/transactions")
+    fun createTransaction(@RequestBody transaction: Transaction): MutableMap<String, String> {
+        println("${transaction.fromAccount} and ${transaction.toSend}")
+
         transactionService?.saveTransaction(transaction)
 
-        return "success"
+        return Collections.singletonMap("message", "success")
     }
 
-    @GetMapping("/viewAll")
+    @GetMapping("/transactions")
     fun viewAllTransactions(): Iterable<Transaction?>? {
         return transactionService?.getTransactionHistory()
     }
 
-    @GetMapping("/view/{id}")
+    @GetMapping("/transactions/{id}")
     fun viewTransactionById(@PathVariable("id") id: Long): Transaction? {
         val transaction = transactionService?.getTransaction(id)
 
@@ -32,6 +36,6 @@ class TransactionController {
             return transaction.get()
         }
 
-        throw InvalidTransactionReferenceException("Invalid transaction reference provided")
+        throw ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction not found!")
     }
 }

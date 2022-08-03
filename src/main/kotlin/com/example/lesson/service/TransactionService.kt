@@ -12,12 +12,12 @@ class TransactionService {
     @Autowired
     var transactionRepository: TransactionRepository? = null
 
-    fun saveTransaction(transaction: Transaction?) {
+    fun saveTransaction(transaction: Transaction) {
         transactionRepository?.save(transaction)
     }
 
     fun getTransactionHistory(): Iterable<Transaction?>? {
-        return transactionRepository?.findAll()
+        return transactionRepository?.findAllByOrderByIdDesc()
     }
 
     fun getTransaction(id: Long): Optional<Transaction>? {
