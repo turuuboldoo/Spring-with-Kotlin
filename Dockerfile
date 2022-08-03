@@ -1,4 +1,7 @@
-FROM openjdk:19-jdk-alpine
+FROM gradle:jdk-alpine
 WORKDIR /app
-COPY build/libs/lesson-0.0.1.jar /app/lesson.jar
-CMD ["java", "-jar", "/app/lesson.jar"]
+COPY . /app
+RUN cd /app && gradle build -x test
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom", "-jar","/app/build/libs/lesson-0.0.1.jar"]
+
+#CMD ["java", "-jar", "/app/lesson.jar"]

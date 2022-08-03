@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin:fpm-alpine
+    container_name: phpmyadmin
+    depends_on:
+      - mysql
+    restart: always
+    ports:
+      - '8089:80'
+    environment:
+      PMA_HOST: admin

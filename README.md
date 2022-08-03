@@ -130,19 +130,7 @@ git clone git@github.com:turuuboldoo/spring-in-kotlin.git
 Git clone хийх үед _ssh_ алдаа гарч байвал _ssh key_ нэмэх шаардлагатай [SSH key үүсгэх](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
 
 ## Хөгжүүлэлт
-Project хуулсан directory Gradle build хийнэ үү
-
-```
-gradle build
-```
-
-Хэрэв тест файл дээр алдаа гарч байвал дараах байдлаар build хийгээрэй
-
-```
-gradle build -x test
-```
-
-Gradle build амжилттай болсон бол docker орчноос Spring project, MySQL хамт асаая
+Project хуулсан directory-руу очин docker орсноос асаах
 
 ```
 docker-compose up -d --build
@@ -154,3 +142,11 @@ docker-compose ps
 ```
 
 Амжилттай ассан бол _http://127.0.0.1:34001/_ URL-аар browser дээр мөн шалгаж болно
+
+## Нэмэлт
+Зөвхөн MySQL асааж ашиглах бол дараах командаар асааж ашиглана
+```
+docker-compose -f docker-compose-db.yml up -d
+```
+
+PhpMyAdmin ашиглан database-рүү хандах боломжтой http://127.0.0.1:80
