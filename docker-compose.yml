@@ -1,0 +1,32 @@
+version: "3.3"
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - bridge
+
+  app:
+    image: app:latest
+    container_name: "app"
+    restart: always
+    build:
+      context: .
+    networks:
+      - bridge
+    ports:
+      - "34001:8080"
+
+volumes:
+  es_data:
+    driver: local
+  db-data: { }
+
+networks:
+  bridge:
+    driver: bridge
